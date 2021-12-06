@@ -1,0 +1,30 @@
+﻿@model LeaveManagement.Data.LeaveType;
+
+<h1>Create Customer</h1>
+@using (Html.BeginForm("Create", "LeaveTypes"))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.DateCreated)
+        @Html.TextBoxFor(x => x.DateCreated, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.DateCreated, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.DefaultDays)
+        @Html.TextBoxFor(x => x.DefaultDays, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.DateCreated, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary ">Save</button>
+    </div>
+}
