@@ -1,82 +1,82 @@
-﻿@model IEnumerable<LeaveManagement.Data.LeaveType>
+﻿@model IEnumerable<LeaveManagement.DataViewModels.LeaveTypeViewModel>
 
-    @{
-        ViewData["Title"] = "Index";
-    }
+@{
+    ViewData["Title"] = "Index";
+}
 
-    <h1>Index</h1>
+<h1>Index</h1>
 
-    <p>
-        <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Create New</a>
-    </p>
-    <table id="tblData" class="table">
-        <thead>
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Create New</a>
+</p>
+<table id="tblData" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DefaultDays)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateCreated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DefaultDays)
-                </th>
-                <th>Actions</th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DefaultDays)
+                </td>
+                <td>
+                    <a asp-action="EditLeaveType" class="btn btn-warning" asp-route-id="@item.Id">
+                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                        Edit
+                    </a>
+
+                    <a asp-action="Details" class="btn btn-secondary" asp-route-id="@item.Id">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        Details
+                    </a>
+
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        Delete
+                    </a>
+
+
+
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateCreated)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DefaultDays)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@item.Id">
-                            <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                            Edit
-                        </a>
-
-                        <a asp-action="Details" class="btn btn-secondary" asp-route-id="@item.Id">
-                            <i class="fa fa-info-circle" aria-hidden="true"></i>
-                            Details
-                        </a>
-
-                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            Delete
-                        </a>
+        }
+    </tbody>
+</table>
 
 
-
-                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-
-    @section Scripts
+@section Scripts
 {
-        @*<script>
-                $(document).ready(function () {
-                    $('#tblData').DataTable();
-                });
-            </script>*@
-    }
+    <script>
+        $(document).ready(function () {
+            $('#tblData').DataTable();
+        });
+    </script>
+}
