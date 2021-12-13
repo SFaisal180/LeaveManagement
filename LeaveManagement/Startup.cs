@@ -36,7 +36,8 @@ namespace LeaveManagement
                     Configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()                   //For Adding Roles in the system add this line
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //KNOWLEDGE OF REPOSITORY
@@ -52,7 +53,10 @@ namespace LeaveManagement
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+            IWebHostEnvironment env , 
+            UserManager<IdentityUser> userManager , 
+            RoleManager<IdentityRole> roleManager)  // Added USerManage and RoleManager for managing userROles
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +76,8 @@ namespace LeaveManagement
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            SeedData.Seed(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {

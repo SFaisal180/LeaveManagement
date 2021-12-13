@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@*@using Microsoft.AspNetCore.Identity
+    @using LeveManagementdelete.Data
+    @inject SignInManager<Employee> SignInManager
+    @inject UserManager<Employee> UserManager*@
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -31,41 +39,41 @@
                         </li>
 
 
-                        @*@if (SignInManager.IsSignedIn(User))
-        {
+                        @if (SignInManager.IsSignedIn(User))
+                        {
 
-            @if (User.IsInRole("Administrator"))
-            {*@
+                            @if (User.IsInRole("Administrator"))
+                            {
 
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" role="button" aria-haspopup="true">Manage</a>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" role="button" aria-haspopup="true">Manage</a>
 
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                                <a class="dropdown-item text-dark"
-                                   asp-controller="LeaveTypes"
-                                   asp-action="Index">Leave Type</a>
+                                        <a class="dropdown-item text-dark"
+                                           asp-controller="LeaveTypes"
+                                           asp-action="Index">Leave Type</a>
 
-                                <a class="dropdown-item text-dark"
-                                   asp-controller="LeaveAllocation"
-                                   asp-action="Index">Leave Allocations</a>
+                                        <a class="dropdown-item text-dark"
+                                           asp-controller="LeaveAllocation"
+                                           asp-action="Index">Leave Allocations</a>
 
-                                <a class="dropdown-item text-dark"
-                                   asp-controller="LeaveRequest"
-                                   asp-action="Index">Leave Request</a>
+                                        <a class="dropdown-item text-dark"
+                                           asp-controller="LeaveRequest"
+                                           asp-action="Index">Leave Request</a>
 
-                                @*<hr class="dropdown-divider">*@
+                                        @*<hr class="dropdown-divider">*@
 
-                                <a class="dropdown-item text-dark"
-                                   asp-controller="LeaveAllocation"
-                                   asp-action="ListEmployees">Employees</a>
+                                        <a class="dropdown-item text-dark"
+                                           asp-controller="LeaveAllocation"
+                                           asp-action="ListEmployees">Employees</a>
 
-                            </div>
-                        </li>
-                        @* }
+                                    </div>
+                                </li>
+                            }
 
-        }*@
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
