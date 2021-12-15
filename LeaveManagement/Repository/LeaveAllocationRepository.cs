@@ -1,5 +1,6 @@
 ﻿using LeaveManagement.Contracts;
 using LeaveManagement.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LeaveManagement.Repository
 {
-    public class LeaveAllocationRepository : ILeaveAllocation
+    public class LeaveAllocationRepository : ILeaveAllocationRepository
     {
 
         public ApplicationDbContext _context;
@@ -15,6 +16,27 @@ namespace LeaveManagement.Repository
         {
             this._context = _context;
         }
+
+
+        #region For Checking ALlocation
+        //public bool CheckAllocation(int leaveTypeId, string EmployeeId)
+        //{
+        //    var period = DateTime.Now.Year;
+        //    return FindAll().Where(x => x.LeaveTypeId == leaveTypeId && x.EmployeeId == EmployeeId && x.Period == period).Any();
+        //}
+
+        public bool CheckAllocation(int leaveTypeId, string EmployeeId)
+        {
+            var period = DateTime.Now.Year;
+            var isExist =  FindAll().Where(x => x.LeaveTypeId == leaveTypeId && x.EmployeeId == EmployeeId && x.Period == period).Any();
+            if (isExist)
+            {
+                return true;
+            }
+            return false;
+        }
+        #endregion
+
         public bool Create(Data.LeaveAllocation entity)
         {
             _context.LeaveAllocations.Add(entity);
@@ -23,20 +45,30 @@ namespace LeaveManagement.Repository
 
         public bool Delete(Data.LeaveAllocation entity)
         {
-          _context.LeaveAllocations.Remove(entity);
+            _context.LeaveAllocations.Remove(entity);
             var _entity = Save();
             return _entity;
         }
 
         public ICollection<Data.LeaveAllocation> FindAll()
         {
-            var leaveAllocations = _context.LeaveAllocations.ToList();
+            var leaveAllocations = _context.LeaveAllocations
+                                           .Include(x => x.LeaveType)
+                                           .Include(x => x.Employee).ToList();
             return leaveAllocations;
         }
 
-        public Data.LeaveAllocation FindById(int id)
+        public Data.LeaveAllocation FindByIdd(int id)
         {
             var leaveAllocation = _context.LeaveAllocations.Find(id);
+            return leaveAllocation;
+        }     
+        public Data.LeaveAllocation FindById(int id)
+        {
+            var leaveAllocation = _context.LeaveAllocations
+                                          .Include(x=>x.LeaveType)
+                                          .Include(x=>x.Employee)
+                                          .SingleOrDefault(x=>x.Id == id);
             return leaveAllocation;
         }
 
@@ -91,14 +123,13 @@ namespace LeaveManagement.Repository
             }
             return false;
 
-           //var isExist =  FindById(id);
+            //var isExist =  FindById(id);
             // if (isExist)
             // {
             //     return true;
             // }
             // return false;
         }
-
         #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace LeaveManagement.AutoMapperMappingProfile
         {
             CreateMap<LeaveType, LeaveTypeViewModel>().ReverseMap();
             CreateMap<LeaveAllocation, LeaveAllocationViewModel>().ReverseMap();
-         //   CreateMap<LeaveAllocation, EditLeaveAllocationViewModel>().ReverseMap();
+            CreateMap<LeaveAllocation, EditLeaveAllocationViewModel>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestViewModel>().ReverseMap();
             CreateMap<Employee, EmployeeViewModel>().ReverseMap();
         }

@@ -43,7 +43,7 @@ namespace LeaveManagement
             //KNOWLEDGE OF REPOSITORY
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveRequest, LeaveRequestRepository>();
-            services.AddScoped<ILeaveAllocation, LeaveAllocationRepository>();
+            services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 
             //AUTOMAPPER
             services.AddAutoMapper(typeof(DbMaps));

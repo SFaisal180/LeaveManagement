@@ -14,6 +14,9 @@ namespace LeaveManagement.Data
         public string Name { get; set; }
         public DateTime DateCreated { get; set; }
 
+        [Required]
+        [Range(1,25,ErrorMessage ="Please Enter A Valid Range")]
+        [Display(Name = "Number Of Days")]
         public int DefaultDays { get; set; }
     }
 }
