@@ -25,17 +25,17 @@ namespace LeaveManagement.Controllers
 
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var leaveTypes = _leaveTypeRepository.FindAll().ToList();
-            var model = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leaveTypes);
+            var leaveTypes = await _leaveTypeRepository.FindAll();
+            var model = _mapper.Map<List<LeaveType>, List<LeaveTypeViewModel>>(leaveTypes.ToList());
             return View(model);
         }
 
         [HttpGet]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var isExist = _leaveTypeRepository.IsExists(id);
+            var isExist = await _leaveTypeRepository.IsExists(id);
             if (!isExist)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace LeaveManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(LeaveTypeViewModel leaveTypeViewModel)
+        public async Task<IActionResult> Create(LeaveTypeViewModel leaveTypeViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace LeaveManagement.Controllers
 
             var leaveType = _mapper.Map<LeaveType>(leaveTypeViewModel);
             leaveType.DateCreated = DateTime.Now;
-            var isSuccess = _leaveTypeRepository.Create(leaveType);
+            var isSuccess = await _leaveTypeRepository.Create(leaveType);
             if (!isSuccess)
             {
                 ModelState.AddModelError("", "Something Went Wrong");
@@ -73,19 +73,20 @@ namespace LeaveManagement.Controllers
 
 
         [HttpGet]
-        public IActionResult EditLeaveType(int id)
+        public async Task<IActionResult> EditLeaveType(int id)
         {
-            if (!_leaveTypeRepository.IsExists(id))
+            var leaveType = await _leaveTypeRepository.IsExists(id);
+            if (!leaveType)
             {
                 return NotFound();
             }
-            var leaveType = _leaveTypeRepository.FindById(id);
+
             var model = _mapper.Map<LeaveTypeViewModel>(leaveType);
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult EditLeaveType(LeaveTypeViewModel leaveTypeViewModel)
+        public async Task<IActionResult> EditLeaveType(LeaveTypeViewModel leaveTypeViewModel)
         {
 
             if (!ModelState.IsValid)
@@ -99,7 +100,7 @@ namespace LeaveManagement.Controllers
             //_leaveType.DefaultDays = leaveTypeViewModel.DefaultDays;
 
 
-            var isSuccess = _leaveTypeRepository.Update(leaveType);
+            var isSuccess = await _leaveTypeRepository.Update(leaveType);
             if (!isSuccess)
             {
                 ModelState.AddModelError("", "Something Went Wrong");
@@ -108,13 +109,14 @@ namespace LeaveManagement.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            if (!_leaveTypeRepository.IsExists(id))
+            var isExist = await _leaveTypeRepository.IsExists(id);
+            if (!isExist)
             {
                 return NotFound();
             }
-            var leaveType = _leaveTypeRepository.FindById(id);
+            var leaveType = await _leaveTypeRepository.FindById(id);
             var leaveTypeViewModel = _mapper.Map<LeaveTypeViewModel>(leaveType);
             return View(leaveTypeViewModel);
         }
@@ -122,12 +124,12 @@ namespace LeaveManagement.Controllers
         // POST: LeaveTypeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(LeaveTypeViewModel model)
+        public async Task<ActionResult> Delete(LeaveTypeViewModel model)
         {
             try
             {
                 var leaveType = _mapper.Map<LeaveType>(model);
-                var isSucess = _leaveTypeRepository.Delete(leaveType);
+                var isSucess = await _leaveTypeRepository.Delete(leaveType);
                 if (!isSucess)
                 {
                     return View(model);

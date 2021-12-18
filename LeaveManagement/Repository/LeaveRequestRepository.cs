@@ -20,26 +20,26 @@ namespace LeaveManagement.Repository
 
         public ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeId)
         {
-            var leaveRequests = FindAll()
+            var leaveRequests = FindAlll()
               .Where(q => q.RequestingEmployeeId == employeeId)
               .ToList();
             return leaveRequests;
         }
 
-        public bool Create(LeaveRequest entity)
+        public bool Createe(LeaveRequest entity)
         {
             _context.LeaveRequests.Add(entity);
-            return Save();
+            return Savee();
         }
 
 
-        public bool Delete(LeaveRequest entity)
+        public bool Deletee(LeaveRequest entity)
         {
             var leaveRequest = _context.LeaveRequests.Remove(entity);
-            return Save();
+            return Savee();
         }
 
-        public ICollection<LeaveRequest> FindAll()
+        public ICollection<LeaveRequest> FindAlll()
         {
             var leaveRequest = _context.LeaveRequests
                                        .Include(x=>x.LeaveType)
@@ -50,13 +50,13 @@ namespace LeaveManagement.Repository
 
 
 
-        public LeaveRequest FindByIdd(int id)
+        public LeaveRequest FindByIddd(int id)
         {
             var leaveRequest = _context.LeaveRequests.Find(id);
             return leaveRequest;
         }
 
-        public LeaveRequest FindById(int id)
+        public LeaveRequest FindByIdd(int id)
         {
             var leaveRequest = _context.LeaveRequests
                                        .Include(x => x.LeaveType)
@@ -65,7 +65,7 @@ namespace LeaveManagement.Repository
             return leaveRequest;
         }
 
-        public bool Save()
+        public bool Savee()
         {
             var save = _context.SaveChanges();
             if (true)
@@ -75,16 +75,72 @@ namespace LeaveManagement.Repository
             return false;
         }
 
-        public bool Update(LeaveRequest entity)
+        public bool Updatee(LeaveRequest entity)
         {
 
             _context.LeaveRequests.Update(entity);
-            return Save();
+            return Savee();
         }
 
-        public bool IsExists(int id)
+        public bool IsExistss(int id)
         {
             var isExist = _context.LeaveTypes.Any(x => x.Id == id);
+            if (isExist)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<ICollection<LeaveRequest>> FindAll()
+        {
+            var _leaveRequest = await _context.LeaveRequests.ToListAsync();
+            return _leaveRequest;
+        }
+
+        public async Task<LeaveRequest> FindById(int id)
+        {
+            var _leaveRequest = await _context.LeaveRequests.FindAsync(id);
+            return _leaveRequest;
+        }
+
+        public async Task<bool> Create(LeaveRequest entity)
+        {
+            await _context.AddAsync(entity);
+            return await Save();
+        }
+
+        public async Task<bool> Update(LeaveRequest entity)
+        {
+            _context.LeaveRequests.Update(entity);
+            return await Save();
+        }
+
+        public async Task<bool> Delete(LeaveRequest entity)
+        {
+            _context.LeaveRequests.Remove(entity);
+            var _entity = await Save();
+            return _entity;
+        }
+
+        public async Task<bool> Save()
+        {
+            var save = await _context.SaveChangesAsync();
+            if (save > 0)
+            {
+                return true;
+            }
+            return false;
+            //if (true)
+            //{
+            //    return true;
+            //}
+            //return false;
+        }
+
+        public async Task<bool> IsExists(int id)
+        {
+            var isExist = await _context.LeaveTypes.AnyAsync(x => x.Id == id);
             if (isExist)
             {
                 return true;

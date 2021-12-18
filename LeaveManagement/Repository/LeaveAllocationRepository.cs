@@ -28,7 +28,7 @@ namespace LeaveManagement.Repository
         public bool CheckAllocation(int leaveTypeId, string EmployeeId)
         {
             var period = DateTime.Now.Year;
-            var isExist =  FindAll().Where(x => x.LeaveTypeId == leaveTypeId && x.EmployeeId == EmployeeId && x.Period == period).Any();
+            var isExist =  FindAlll().Where(x => x.LeaveTypeId == leaveTypeId && x.EmployeeId == EmployeeId && x.Period == period).Any();
             if (isExist)
             {
                 return true;
@@ -39,7 +39,7 @@ namespace LeaveManagement.Repository
         public ICollection<LeaveAllocation> GetLeaveAllocationsByEmployee(string employeeid)
         {
             var period = DateTime.Now.Year;
-            var allocation = FindAll()
+            var allocation = FindAlll()
                  .Where(x => x.EmployeeId == employeeid && x.Period == period).ToList();
             return allocation;
         }
@@ -56,26 +56,26 @@ namespace LeaveManagement.Repository
         public LeaveAllocation GetLeaveAllocationsByEmployeeAndType(string employeeid, int leavetypeid)
         {
             var period = DateTime.Now.Year;
-            var allocation = FindAll()
+            var allocation = FindAlll()
                    .FirstOrDefault(q => q.EmployeeId == employeeid && q.Period == period && q.LeaveTypeId == leavetypeid);
             return allocation;
         }
         #endregion
 
-        public bool Create(Data.LeaveAllocation entity)
+        public bool Createe(Data.LeaveAllocation entity)
         {
             _context.LeaveAllocations.Add(entity);
-            return Save();
+            return Savee();
         }
 
-        public bool Delete(Data.LeaveAllocation entity)
+        public bool Deletee(Data.LeaveAllocation entity)
         {
             _context.LeaveAllocations.Remove(entity);
-            var _entity = Save();
+            var _entity = Savee();
             return _entity;
         }
 
-        public ICollection<Data.LeaveAllocation> FindAll()
+        public ICollection<Data.LeaveAllocation> FindAlll()
         {
             var leaveAllocations = _context.LeaveAllocations
                                            .Include(x => x.LeaveType)
@@ -83,12 +83,12 @@ namespace LeaveManagement.Repository
             return leaveAllocations;
         }
 
-        public Data.LeaveAllocation FindByIdd(int id)
+        public Data.LeaveAllocation FindByIddd(int id)
         {
             var leaveAllocation = _context.LeaveAllocations.Find(id);
             return leaveAllocation;
         }     
-        public Data.LeaveAllocation FindById(int id)
+        public Data.LeaveAllocation FindByIdd(int id)
         {
             var leaveAllocation = _context.LeaveAllocations
                                           .Include(x=>x.LeaveType)
@@ -97,7 +97,7 @@ namespace LeaveManagement.Repository
             return leaveAllocation;
         }
 
-        public bool Save()
+        public bool Savee()
         {
             var save = _context.SaveChanges();
             if (true)
@@ -107,10 +107,10 @@ namespace LeaveManagement.Repository
             return false;
         }
 
-        public bool Update(Data.LeaveAllocation entity)
+        public bool Updatee(Data.LeaveAllocation entity)
         {
             _context.LeaveAllocations.Update(entity);
-            return Save();
+            return Savee();
         }
 
         public int CreateByIntAsync(Data.LeaveAllocation entity)
@@ -139,7 +139,7 @@ namespace LeaveManagement.Repository
             }
         }
 
-        public bool IsExists(int id)
+        public bool IsExistss(int id)
         {
             var isExist = _context.LeaveTypes.Any(x => x.Id == id);
             if (isExist)
@@ -156,5 +156,66 @@ namespace LeaveManagement.Repository
             // return false;
         }
         #endregion
+        public async Task<ICollection<LeaveAllocation>> FindAll()
+        {
+            var leaveAllocation = await _context.LeaveAllocations
+                                           .Include(x => x.LeaveType)
+                                           .Include(x => x.Employee).ToListAsync();
+            return leaveAllocation;
+        }
+
+        public async Task<LeaveAllocation> FindById(int id)
+        {
+            var leaveAllocation = await _context.LeaveAllocations
+                                          .Include(x => x.LeaveType)
+                                          .Include(x => x.Employee)
+                                          .SingleOrDefaultAsync(x => x.Id == id);
+            return leaveAllocation;
+        }
+
+        public async Task<bool> Create(LeaveAllocation entity)
+        {
+            await _context.AddAsync(entity);
+            return await Save();
+        }
+
+        public async Task<bool> Update(LeaveAllocation entity)
+        {
+            _context.LeaveAllocations.Update(entity);
+            return await Save();
+        }
+
+        public async  Task<bool> Delete(LeaveAllocation entity)
+        {
+            _context.LeaveAllocations.Remove(entity);
+            var _entity = await Save();
+            return _entity;
+        }
+
+        public async Task<bool> Save()
+        {
+            var save = await _context.SaveChangesAsync();
+            if (save > 0)
+            {
+                return true;
+            }
+            return false;
+            //if (true)
+            //{
+            //    return true;
+            //}
+            //return false;
+        }
+
+        public async  Task<bool> IsExists(int id)
+        {
+            var isExist = await _context.LeaveAllocations.AnyAsync(x => x.Id == id);
+            if (isExist)
+            {
+                return true;
+            }
+            return false;
+        }
+      
     }
 }
