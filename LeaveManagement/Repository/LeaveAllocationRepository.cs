@@ -35,6 +35,31 @@ namespace LeaveManagement.Repository
             }
             return false;
         }
+
+        public ICollection<LeaveAllocation> GetLeaveAllocationsByEmployee(string employeeid)
+        {
+            var period = DateTime.Now.Year;
+            var allocation = FindAll()
+                 .Where(x => x.EmployeeId == employeeid && x.Period == period).ToList();
+            return allocation;
+        }
+
+        //public LeaveAllocation GetLeaveAllocationsByEmployeeAndType(string id, int leaveTypeId)
+        //{
+        //    var period = DateTime.Now.Year;
+        //    var allocation = FindAll()
+        //         .FirstOrDefault(x => x.EmployeeId == id && x.Period == period && x.LeaveTypeId == leaveTypeId)
+        //         ;
+        //    return allocation;
+        //}
+
+        public LeaveAllocation GetLeaveAllocationsByEmployeeAndType(string employeeid, int leavetypeid)
+        {
+            var period = DateTime.Now.Year;
+            var allocation = FindAll()
+                   .FirstOrDefault(q => q.EmployeeId == employeeid && q.Period == period && q.LeaveTypeId == leavetypeid);
+            return allocation;
+        }
         #endregion
 
         public bool Create(Data.LeaveAllocation entity)

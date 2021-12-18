@@ -87,8 +87,13 @@ namespace LeaveManagement.Controllers
             var employee = _userManager.FindByIdAsync(id).Result;
             var employeeViewModel = _mapper.Map<EmployeeViewModel>(employee);
 
+            #region  You can Use Both the Approch
+            var allocation = _leaveallocationRepository.GetLeaveAllocationsByEmployee(id);
+
             var leaveAllocations = _leaveallocationRepository.FindAll().Where
                 (x => x.EmployeeId == id && x.Period == period).ToList();
+
+            #endregion
             var leaveAllocationsViewModel = _mapper.Map<List<LeaveAllocationViewModel>>(leaveAllocations);
 
             var viewAllocationViewModel = new ViewAllocationViewModel

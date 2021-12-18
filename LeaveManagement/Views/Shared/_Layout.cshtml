@@ -12,8 +12,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LeaveManagement</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />   @*DATA TABLE CDN*@
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" /> @*FONT AWESOME CDN*@
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  @*DatePicker*@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -95,6 +96,11 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* <script src="https://code.jquery.com/jquery-1.12.4.js"></script>   Jquery Calendar is not working coz of this*@
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

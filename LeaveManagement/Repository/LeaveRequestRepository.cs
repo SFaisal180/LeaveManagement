@@ -1,5 +1,6 @@
 ﻿using LeaveManagement.Contracts;
 using LeaveManagement.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,14 @@ namespace LeaveManagement.Repository
         }
 
 
+        public ICollection<LeaveRequest> GetLeaveRequestsByEmployee(string employeeId)
+        {
+            var leaveRequests = FindAll()
+              .Where(q => q.RequestingEmployeeId == employeeId)
+              .ToList();
+            return leaveRequests;
+        }
+
         public bool Create(LeaveRequest entity)
         {
             _context.LeaveRequests.Add(entity);
@@ -32,13 +41,27 @@ namespace LeaveManagement.Repository
 
         public ICollection<LeaveRequest> FindAll()
         {
-            var leaveRequest = _context.LeaveRequests.ToList();
+            var leaveRequest = _context.LeaveRequests
+                                       .Include(x=>x.LeaveType)
+                                       .Include(x => x.RequestingEmployee)
+                                       .ToList();
+            return leaveRequest;
+        }
+
+
+
+        public LeaveRequest FindByIdd(int id)
+        {
+            var leaveRequest = _context.LeaveRequests.Find(id);
             return leaveRequest;
         }
 
         public LeaveRequest FindById(int id)
         {
-            var leaveRequest = _context.LeaveRequests.Find(id);
+            var leaveRequest = _context.LeaveRequests
+                                       .Include(x => x.LeaveType)
+                                       .Include(x => x.RequestingEmployee)
+                                       .SingleOrDefault(x=>x.Id ==id);
             return leaveRequest;
         }
 
